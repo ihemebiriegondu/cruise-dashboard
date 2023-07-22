@@ -9,8 +9,6 @@ import { FiFilter, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { OrdersList } from "./components/orderList";
 
 function App() {
-
-
   return (
     <main className="bg-indigo-100 flex gap-x-1.5">
       {/* side navbar */}
@@ -48,23 +46,7 @@ function App() {
               <th className="text-start font-normal">Date</th>
             </tr>
           </thead>
-
-          <tbody>
-            <OrdersList />
-            {/*
-              orders.map((order) => (
-                <tr>
-                  <td className='py-3 ps-9'>{order.id}</td>
-                  <td className='font-bold'>{order.product}</td>
-                  <td className='text-center'>{order.name}</td>
-                  <td className='text-sm text-center'><button className={` ${order.status === 'Complete' ? 'bg-green-100 text-green-500' : ''} 
-                      ${order.status === 'Pending' ? 'bg-yellow-100 text-yellow-500' : ''}
-                      ${order.status === 'Rejected' ? 'bg-red-100 text-red-500' : ''} py-2 px-4 rounded-xl`}>{order.status}</button></td>
-                  <td>{order.date}</td>
-                </tr>
-              ))
-              */}
-          </tbody>
+          <OrdersList />
         </table>
 
         {/*footer pagination */}

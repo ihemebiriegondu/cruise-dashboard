@@ -30,14 +30,14 @@ type Orders = {
 
 //initialState format/syntax
 export interface OrderState {
-  orders: null | Orders[];
+  orders: Orders[];
   loading: boolean;
   error: null | string;
 }
 
 //defining the initial state and its initial values
 const initialState = {
-  orders: null,
+  orders: [],
   loading: false,
   error: null,
 } as OrderState;
