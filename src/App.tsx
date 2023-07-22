@@ -6,8 +6,11 @@ import BreadCrumbs from "./components/breadCrumbs";
 import FilterModal from "./components/filterModal";
 
 import { FiFilter, FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { OrdersList } from "./components/orderList";
 
 function App() {
+
+
   return (
     <main className="bg-indigo-100 flex gap-x-1.5">
       {/* side navbar */}
@@ -47,6 +50,7 @@ function App() {
           </thead>
 
           <tbody>
+            <OrdersList />
             {/*
               orders.map((order) => (
                 <tr>
