@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 //fetching the data from firebaseDb with axios
 //<Orders[]> makes sure the data gotten is in the Orders format defined below
@@ -9,7 +9,7 @@ export const getOrders = createAsyncThunk(
   async (data, thunkapi) => {
     try {
       const response = await axios.get<Orders[]>(
-        "https://firestore.googleapis.com/v1/projects/jdeveloper-task/databases/(default)/documents/dashboardOrders"
+        "https://firestore.googleapis.com/v1/projects/to-do-app-88bb2/databases/(default)/documents/dashboardOrders"
       );
       return response.data;
     } catch (err: any) {
@@ -17,22 +17,24 @@ export const getOrders = createAsyncThunk(
       return thunkapi.rejectWithValue(err.message);
     }
   }
-); 
+);
 
 //orders format
 type Orders = {
-  id: number,
-  date: Date,
-  product: string,
-  name: string,
-  status: string,
-}
+  id: number;
+  date: Date;
+  product: string;
+  name: string;
+  status: string;
+};
 
 //initialState format/syntax
 export interface OrderState {
   orders: Orders[];
   loading: boolean;
   error: null | string;
+
+  filter: any[];
 }
 
 //defining the initial state and its initial values
@@ -40,6 +42,8 @@ const initialState = {
   orders: [],
   loading: false,
   error: null,
+
+  filter: [],
 } as OrderState;
 
 export const ordersSlice = createSlice({
@@ -47,24 +51,12 @@ export const ordersSlice = createSlice({
   initialState,
 
   reducers: {
-    // standard reducer logic, with auto-generated action types per reducer
-
-
-    /*//return { ...state, orders: [...action.payload] };
-    setOrders: (state, action) => {
-      //console.log(action.payload)
-      state.orders = action.payload;
-      //console.log(state)
+    filterOrder: (state, action) => {
+      //console.log(action.payload);
+      //updated the initialState filter value to whatever filter value is passed in by the payload
+      //so the filter value can be used to filter the orders in other components (orderList component)
+      state.filter = action.payload;
     },
-    filterByStatus: (state, action) => {
-      const orders = state.orders.map((order) => {
-        /*if (order.id === action.payload.id) {
-          order = action.payload;
-        }
-        return order;
-      });
-      return { ...state, orders: [...orders] };
-    },*/
   },
 
   extraReducers: (builder) => {
@@ -73,16 +65,19 @@ export const ordersSlice = createSlice({
       .addCase(getOrders.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(getOrders.fulfilled, (state, action: PayloadAction<Orders[]>) => {
-        state.loading = false;
-        state.orders = action.payload;
-      })
+      .addCase(
+        getOrders.fulfilled,
+        (state, action: PayloadAction<Orders[]>) => {
+          state.loading = false;
+          state.orders = action.payload;
+        }
+      )
       .addCase(getOrders.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
-      })
+      });
   },
 });
 
-//export const { setOrders, filterByStatus } = ordersSlice.actions;
+export const { filterOrder } = ordersSlice.actions;
 export default ordersSlice.reducer;

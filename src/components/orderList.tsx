@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-
 //import the already called functions from the hooks
 import { useAppSelector, useAppDispatch } from "../app/hooks";
-
 import { getOrders } from "../app/ordersSlice";
+
+//this is the changable value (instead of useState)
+let filteredOrder = [];
 
 export function OrdersList() {
   //get the updated states
-  const { orders, loading, error } = useAppSelector(
+  const { orders, loading, error, filter } = useAppSelector(
     (state) => state.ordersReducer
   );
 
@@ -39,19 +40,116 @@ export function OrdersList() {
   ordersArray.forEach((array) => {
     allOrdersFields.push(array.fields);
   });
-  //console.log(allOrdersFields);
+  filteredOrder = allOrdersFields;
+
+  //getting if orderDate is today, tomorrow...
+  const getDateValue = (fullDate: any) => {
+    const todaysDate = new Date();
+    const fullDateValue = new Date(fullDate);
+    const yesterdayDate = new Date(todaysDate.valueOf() - 1000 * 60 * 60 * 24);
+    todaysDate.setHours(0);
+    todaysDate.setMinutes(0);
+    todaysDate.setSeconds(0);
+
+    const getWeek = (datetoGet: any) => {
+      const year = new Date(datetoGet.getFullYear(), 0, 1);
+      const days = Math.floor(
+        (datetoGet.getTime() - year.getTime()) / (24 * 60 * 60 * 1000)
+      );
+      const week = Math.ceil((datetoGet.getDay() + 1 + days) / 7);
+
+      return week;
+    };
+
+    //array to contain the different date filterby
+    const dateFil: any[] = [];
+
+    if (todaysDate.getMonth() === fullDateValue.getMonth()) {
+      dateFil.push("thismonth");
+    }
+    if (getWeek(todaysDate) === getWeek(fullDateValue)) {
+      dateFil.push("thisweek");
+    }
+    if (
+      todaysDate.toLocaleDateString() === fullDateValue.toLocaleDateString()
+    ) {
+      dateFil.push("today");
+    }
+    if (
+      yesterdayDate.toLocaleDateString() === fullDateValue.toLocaleDateString()
+    ) {
+      dateFil.push("yesterday");
+    }
+    return dateFil;
+    //console.log(dateFil)
+  };
+
+  const filtered: any[] = [];
+  //getting the filtered data from wrt the filter value gotten from the orderSlice
+  const getFilteredData = () => {
+    //console.log(filter)
+
+    if (JSON.stringify(filter) === "[null,null]") {
+      //if no filter
+      filteredOrder = allOrdersFields;
+    } else {
+      allOrdersFields.forEach((order) => {
+        //check if the two filters are not empty
+        //if they are both not empty, look for the orders that have the 2 filters
+        if (filter[0] !== null && filter[1] !== null) {
+          //console.log(filter[0]);
+          //console.log(filter[1]);
+          if (
+            order.status.stringValue === filter[0] &&
+            getDateValue(order.date.timestampValue).includes(filter[1])
+          ) {
+            filtered.push(order);
+          }
+          //if either is empty
+        } else if (filter[0] !== null || filter[1] !== null) {
+          if (
+            order.status.stringValue === filter[0] &&
+            !getDateValue(order.date.timestampValue).includes(filter[1])
+          ) {
+            filtered.push(order);
+          } else if (
+            !(order.status.stringValue === filter[0]) &&
+            getDateValue(order.date.timestampValue).includes(filter[1])
+          ) {
+            filtered.push(order);
+          }
+        }
+      });
+      filteredOrder = filtered;
+    }
+    //console.log(filtered);
+  };
+  getFilteredData();
 
   //getting the order dates from the timestamp in the database
   const getDatefromTimestamp = (timestamp: any) => {
-    const date = new Date (timestamp);
-    const monthStr = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const date = new Date(timestamp);
+    const monthStr = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const month = monthStr[date.getMonth()];
     const day = date.getDate();
     const year = date.getFullYear();
-    const dateString = `${month} ${day}, ${year}`
+    const dateString = `${month} ${day}, ${year}`;
     //console.log(dateString)
 
-    return dateString
+    return dateString;
   };
 
   return (
@@ -61,8 +159,8 @@ export function OrdersList() {
           <td>loading</td>
         </tr>
       ) : (
-        allOrdersFields &&
-        allOrdersFields.map((order) => (
+        filteredOrder &&
+        filteredOrder.map((order: any) => (
           <tr key={order.onumber.stringValue}>
             <td className="py-5 ps-9">{order.onumber.stringValue}</td>
             <td className="font-bold">{order.product.stringValue}</td>
@@ -70,7 +168,7 @@ export function OrdersList() {
             <td className="text-sm text-center">
               <button
                 className={` ${
-                  order.status.stringValue === "complete"
+                  order.status.stringValue === "completed"
                     ? "bg-green-100 text-green-500"
                     : ""
                 } 
@@ -91,6 +189,11 @@ export function OrdersList() {
             <td>{getDatefromTimestamp(order.date.timestampValue)}</td>
           </tr>
         ))
+      )}
+      {error && (
+        <tr>
+          <td>{error}</td>
+        </tr>
       )}
     </tbody>
   );
