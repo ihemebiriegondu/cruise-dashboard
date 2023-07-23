@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiFillCaretDown } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCheckCircle } from "react-icons/ai";
 
 import { useAppDispatch } from "../app/hooks";
 import { filterOrder } from "../app/ordersSlice";
@@ -102,13 +102,37 @@ export default function FilterBars() {
               show ? "block" : "hidden"
             }`}
           >
-            <li onClick={getFilters} className="my-2 cursor-pointer">
+            <li
+              onClick={getFilters}
+              className="my-2 cursor-pointer flex items-center"
+            >
+              <AiFillCheckCircle
+                className={`me-2 ${
+                  statusFilter === "completed" ? "block" : "hidden"
+                }`}
+              />
               Completed
             </li>
-            <li onClick={getFilters} className="my-2 cursor-pointer">
+            <li
+              onClick={getFilters}
+              className="my-2 cursor-pointer flex items-center"
+            >
+              <AiFillCheckCircle
+                className={`me-2 ${
+                  statusFilter === "pending" ? "block" : "hidden"
+                }`}
+              />
               Pending
             </li>
-            <li onClick={getFilters} className="my-2 cursor-pointer">
+            <li
+              onClick={getFilters}
+              className="my-2 cursor-pointer flex items-center"
+            >
+              <AiFillCheckCircle
+                className={`me-2 ${
+                  statusFilter === "rejected" ? "block" : "hidden"
+                }`}
+              />
               Rejected
             </li>
           </ul>
@@ -121,16 +145,48 @@ export default function FilterBars() {
               show ? "block" : "hidden"
             }`}
           >
-            <li onClick={getFilters} className="my-2 cursor-pointer">
+            <li
+              onClick={getFilters}
+              className="my-2 cursor-pointer flex items-center"
+            >
+              <AiFillCheckCircle
+                className={`me-2 ${
+                  dateFilter === "today" ? "block" : "hidden"
+                }`}
+              />
               Today
             </li>
-            <li onClick={getFilters} className="my-2 cursor-pointer">
+            <li
+              onClick={getFilters}
+              className="my-2 cursor-pointer flex items-center"
+            >
+              <AiFillCheckCircle
+                className={`me-2 ${
+                  dateFilter === "yesterday" ? "block" : "hidden"
+                }`}
+              />
               Yesterday
             </li>
-            <li onClick={getFilters} className="my-2 cursor-pointer">
+            <li
+              onClick={getFilters}
+              className="my-2 cursor-pointer flex items-center"
+            >
+              <AiFillCheckCircle
+                className={`me-2 ${
+                  dateFilter === "thisweek" ? "block" : "hidden"
+                }`}
+              />
               This week
             </li>
-            <li onClick={getFilters} className="my-2 cursor-pointer">
+            <li
+              onClick={getFilters}
+              className="my-2 cursor-pointer flex items-center"
+            >
+              <AiFillCheckCircle
+                className={`me-2 ${
+                  dateFilter === "thismonth" ? "block" : "hidden"
+                }`}
+              />
               This month
             </li>
           </ul>

@@ -14,7 +14,7 @@ function App() {
       <SideNav />
 
       <section className="basis-10/12 py-5">
-        <div className="ps-8 relative">
+        <div className="px-8 relative">
           <BreadCrumbs />
           <SearchBar />
           <FilterBars />
