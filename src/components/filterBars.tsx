@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 
-import { useAppSelector, useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../app/hooks";
 import { filterOrder } from "../app/ordersSlice";
 
 export default function FilterBars() {
   //getting orders with dispatch
-  const orders = useAppSelector((state) => state.ordersReducer.orders);
   const dispatch = useAppDispatch();
 
   const [filterValues, setfilterValues] = useState<any | []>([]);
@@ -17,7 +16,7 @@ export default function FilterBars() {
     //updating the filterby orders
     dispatch(filterOrder(filterValues));
     setfilterValues([statusFilter, dateFilter]);
-  }, [filterValues]);
+  }, [filterValues, dispatch, dateFilter, statusFilter]);
 
   const [targetDropDown, setTargetdropdown] = useState<any | null>(null);
   const [show, setShow] = useState(false);
@@ -28,8 +27,6 @@ export default function FilterBars() {
     setTargetdropdown(target);
     setShow(!show);
   };
-
-  const filterbyArray: any[] = [];
 
   const getFilters = (event: React.MouseEvent<HTMLLIElement>) => {
     //getting the id of the parent element to know if the filter is by status/date/customer

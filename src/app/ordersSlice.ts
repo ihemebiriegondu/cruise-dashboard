@@ -35,6 +35,7 @@ export interface OrderState {
   error: null | string;
 
   filter: any[];
+  searchs: any[];
 }
 
 //defining the initial state and its initial values
@@ -44,6 +45,7 @@ const initialState = {
   error: null,
 
   filter: [],
+  searchs: ['onumber', ''],
 } as OrderState;
 
 export const ordersSlice = createSlice({
@@ -57,6 +59,9 @@ export const ordersSlice = createSlice({
       //so the filter value can be used to filter the orders in other components (orderList component)
       state.filter = action.payload;
     },
+    searchOrderByandValue: (state, action) => {
+      state.searchs = action.payload
+    }
   },
 
   extraReducers: (builder) => {
@@ -79,5 +84,5 @@ export const ordersSlice = createSlice({
   },
 });
 
-export const { filterOrder } = ordersSlice.actions;
+export const { filterOrder, searchOrderByandValue } = ordersSlice.actions;
 export default ordersSlice.reducer;

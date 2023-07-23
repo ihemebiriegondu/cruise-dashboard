@@ -3,9 +3,8 @@ import React from "react";
 import SideNav from "./components/sideNav";
 import SearchBar from "./components/searchBar";
 import BreadCrumbs from "./components/breadCrumbs";
-//import FilterModal from "./components/filterModal";
 
-import { FiFilter, FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { OrdersList } from "./components/orderList";
 import FilterBars from "./components/filterBars";
 

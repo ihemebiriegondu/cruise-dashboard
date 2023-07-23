@@ -1,20 +1,32 @@
-import React, { useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
+import React, { useState, useEffect } from "react";
+import { RxCross2 } from "react-icons/rx";
+
+//import the already called functions from the hooks
+import { useAppDispatch } from "../app/hooks";
+import { searchOrderByandValue } from "../app/ordersSlice";
 
 export default function SearchBar() {
-  const [searchFilter, setSearchFilter] = useState("");
+  const [allSearchValues, setAllSearchValues] = useState<any | []>([]);
+  const [searchFilter, setSearchFilter] = useState("onumber");
   const [searchValue, setSearchValue] = useState("");
   //const [searchValue, setSearchValue] = useState<string[]>([]);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    //updating the searchbyorderandvalue orders
+    dispatch(searchOrderByandValue(allSearchValues))
+    setAllSearchValues([searchFilter, searchValue])
+  }, [dispatch, searchFilter, allSearchValues, searchValue]);
+
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
+    const value = event.target.value.toLowerCase();
     setSearchFilter(value);
-    console.log(value);
   };
 
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    const value = event.target.value.toLowerCase();
     setSearchValue(value);
-    console.log(value)
   };
 
   return (
@@ -47,15 +59,16 @@ export default function SearchBar() {
       </select>
 
       <input
-        type={"text"}
+        type={searchFilter === "onumber" ? "tel" : "text"}
         onChange={handleValueChange}
         name="searchInput"
         id="searchInput"
+        value={searchValue}
         placeholder="Search"
         className="grow border-none outline-none px-3 py-2.5 text-sm"
       />
-      <div className="flex-none p-3.5 rounded-sm text-white bg-blue-700 cursor-pointer">
-        <AiOutlineSearch className="text-base" />
+      <div onClick={() => {setSearchValue('')}} className="flex-none p-3.5 rounded-sm text-white bg-blue-700/50 cursor-pointer">
+        <RxCross2 className="text-base" />
       </div>
     </form>
   );
