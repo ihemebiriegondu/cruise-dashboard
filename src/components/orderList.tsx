@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 //import the already called functions from the hooks
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getOrders } from "../app/ordersSlice";
+
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import ReactPaginate from "react-paginate";
 
 //this is the changable value (instead of useState)
 let filteredOrder = [];
@@ -84,7 +87,6 @@ export function OrdersList() {
     return dateFil;
     //console.log(dateFil)
   };
-
   const filtered: any[] = [];
   const searched: any[] = [];
   //getting the filtered data from wrt the filter value gotten from the orderSlice
@@ -180,85 +182,6 @@ export function OrdersList() {
         filteredOrder = searched;
       }
     }
-
-    //if either is empty
-
-    /*if (
-        order.status.stringValue === filter[0] &&
-        !getDateValue(order.date.timestampValue).includes(filter[1])
-      ) {
-        filtered.push(order);
-      } else if (
-        !(order.status.stringValue === filter[0]) &&
-        getDateValue(order.date.timestampValue).includes(filter[1])
-      ) {
-        filtered.push(order);
-      }*/
-
-    /*if (JSON.stringify(searchs) === '["",""]') {
-      filteredOrder = allOrdersFields;
-    } else {
-      allOrdersFields.forEach((order) => {
-        let nameValues = order.name.stringValue.toLowerCase();
-        let productValues = order.product.stringValue.toLowerCase();
-
-        if (searchBy === "onumber") {
-          if (order.onumber.stringValue.includes(searchValue)) {
-            filtered.push(order);
-          }
-        }
-        if (searchBy === "name") {
-          if (nameValues.includes(searchValue)) {
-            filtered.push(order);
-          }
-        }
-        if (searchBy === "product") {
-          if (productValues.includes(searchValue)) {
-            filtered.push(order);
-          }
-        }
-      });
-      //console.log(filtered)
-      filteredOrder = filtered;
-
-      //i added return so it wont call the second if (filter if)
-      return;
-    }
-
-    if (JSON.stringify(filter) === "[null,null]") {
-      //if no filter
-      filteredOrder = allOrdersFields;
-    } else {
-      allOrdersFields.forEach((order) => {
-        //check if the two filters are not empty
-        //if they are both not empty, look for the orders that have the 2 filters
-        if (filter[0] !== null && filter[1] !== null) {
-          //console.log(filter[0]);
-          //console.log(filter[1]);
-          if (
-            order.status.stringValue === filter[0] &&
-            getDateValue(order.date.timestampValue).includes(filter[1])
-          ) {
-            filtered.push(order);
-          }
-          //if either is empty
-        } else if (filter[0] !== null || filter[1] !== null) {
-          if (
-            order.status.stringValue === filter[0] &&
-            !getDateValue(order.date.timestampValue).includes(filter[1])
-          ) {
-            filtered.push(order);
-          } else if (
-            !(order.status.stringValue === filter[0]) &&
-            getDateValue(order.date.timestampValue).includes(filter[1])
-          ) {
-            filtered.push(order);
-          }
-        }
-      });
-      filteredOrder = filtered;
-    }*/
-    //console.log(filtered);
   };
   getFilteredData();
 
@@ -288,26 +211,62 @@ export function OrdersList() {
     return dateString;
   };
 
+  //pagination informations
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(5);
+
+  const indexOfLastPost = currentPage * ordersPerPage;
+  const indexOfFirstPost = indexOfLastPost - ordersPerPage;
+  const currentOrders = filteredOrder.slice(indexOfFirstPost, indexOfLastPost);
+
+  /*selectedItem: {
+    selected: number;
+}): void */
+
+  const paginate = ({ selected }: any) => {
+    setCurrentPage(selected + 1);
+  };
+
   return (
-    <tbody className="pb-4">
-      {loading ? (
-        <tr>
-          <td>loading</td>
-        </tr>
-      ) : (
-        filteredOrder &&
-        filteredOrder.map((order: any) => (
-          <tr key={order.onumber.stringValue} id={order.onumber.stringValue}>
-            <td className="py-5 ps-9">{order.onumber.stringValue}</td>
-            <td className="font-bold">{order.product.stringValue}</td>
-            <td className="text-center">{order.name.stringValue}</td>
-            <td className="text-sm text-center">
-              <button
-                className={` ${
-                  order.status.stringValue === "completed"
-                    ? "bg-green-100 text-green-500"
-                    : ""
-                } 
+    <article>
+      <table className="table-auto w-full rounded-md bg-white divide-y">
+        <caption className="caption-top text-start text-zinc-400 mb-3 mt-4 ps-8">
+          Showing result 101-120 Result
+        </caption>
+
+        <thead className="">
+          <tr className="text-zinc-400">
+            <th className="py-3 ps-9 text-start font-normal">Order number</th>
+            <th className="text-start font-normal">Products</th>
+            <th className="font-normal">Customer names</th>
+            <th className="font-normal">Status</th>
+            <th className="text-start font-normal">Date</th>
+          </tr>
+        </thead>
+
+        <tbody className="pb-4">
+          {loading ? (
+            <tr>
+              <td>loading</td>
+            </tr>
+          ) : (
+            //map the currentOrders gotten from pagination
+            currentOrders &&
+            currentOrders.map((order: any) => (
+              <tr
+                key={order.onumber.stringValue}
+                id={order.onumber.stringValue}
+              >
+                <td className="py-5 ps-9">{order.onumber.stringValue}</td>
+                <td className="font-bold">{order.product.stringValue}</td>
+                <td className="text-center">{order.name.stringValue}</td>
+                <td className="text-sm text-center">
+                  <button
+                    className={` ${
+                      order.status.stringValue === "completed"
+                        ? "bg-green-100 text-green-500"
+                        : ""
+                    } 
                 ${
                   order.status.stringValue === "pending"
                     ? "bg-yellow-100 text-yellow-500"
@@ -318,19 +277,31 @@ export function OrdersList() {
                     ? "bg-red-100 text-red-500"
                     : ""
                 } py-2 px-4 rounded-xl`}
-              >
-                {order.status.stringValue}
-              </button>
-            </td>
-            <td>{getDatefromTimestamp(order.date.timestampValue)}</td>
-          </tr>
-        ))
-      )}
-      {error && (
-        <tr>
-          <td>{error}</td>
-        </tr>
-      )}
-    </tbody>
+                  >
+                    {order.status.stringValue}
+                  </button>
+                </td>
+                <td>{getDatefromTimestamp(order.date.timestampValue)}</td>
+              </tr>
+            ))
+          )}
+          {error && (
+            <tr>
+              <td>{error}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+
+      <ReactPaginate
+        onPageChange={paginate}
+        pageCount={Math.ceil(filteredOrder.length / ordersPerPage)}
+        previousLabel={<FiChevronLeft className="cursor-pointer text-xl" />}
+        nextLabel={<FiChevronRight className="cursor-pointer text-xl" />}
+        breakLabel={'...'}
+        containerClassName={"flex items-center justify-center mt-8 gap-x-6"}
+        activeLinkClassName={"text-blue-700 font-bold"}
+      />
+    </article>
   );
 }
