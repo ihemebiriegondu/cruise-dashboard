@@ -217,7 +217,8 @@ export function OrdersList() {
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredOrder.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentSortedOrders = filteredOrder.sort((a,b) => a.onumber.stringValue - b.onumber.stringValue)
+  const currentOrders = currentSortedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   /*selectedItem: {
     selected: number;
