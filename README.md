@@ -3,6 +3,11 @@
 To install all dependencies
 
 ### `npm install`
+dependencies list: react(typescript), redux Toolkit, tailwindcss, axios, reactIcons, reactPagination
+
+### `npm run start`
+Runs the app in the development mode.
+Open http://localhost:3000 to view it in your browser.
 
 # Slice
 
