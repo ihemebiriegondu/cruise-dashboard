@@ -9,7 +9,7 @@ import FilterBars from "./components/filterBars";
 
 function App() {
   return (
-    <main className="bg-indigo-100 flex justify-start gap-x-1.5 lg:pe-10">
+    <main className="bg-indigo-100 flex justify-start lg:gap-x-1.5 lg:pe-10">
       <aside className="lg:basis-2/12">
         <SideNav />
       </aside>
