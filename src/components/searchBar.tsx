@@ -30,13 +30,13 @@ export default function SearchBar() {
   };
 
   return (
-    <form className="bg-white w-1/2 rounded-md overflow-hidden flex items-center mt-7">
+    <form className="bg-white w-full md:w-3/4 lg:w-1/2 rounded-full sm:rounded-md overflow-hidden flex items-center mt-3 lg:mt-7 transition duration-300 ease-in-out">
       <select
         value={searchFilter}
         onChange={handleFilterChange}
         name="searchFilter"
         id="searchFilter"
-        className="border-none outline-none text-sm ps-3 cursor-pointer pe-3 bg-blue-700 py-3 text-white"
+        className="border-none outline-none smaller:text-sm text-xs ps-1 sm:ps-3 cursor-pointer sm:pe-3 bg-blue-700 py-2 sm:py-3 text-white"
       >
         <option
           value="onumber"
@@ -65,9 +65,9 @@ export default function SearchBar() {
         id="searchInput"
         value={searchValue}
         placeholder="Search"
-        className="grow border-none outline-none px-3 py-2.5 text-sm"
+        className="grow border-none outline-none px-1 sm:px-3 py-2 sm:py-2.5 text-sm"
       />
-      <div onClick={() => {setSearchValue('')}} className="flex-none p-3.5 rounded-sm text-white bg-blue-700/50 cursor-pointer">
+      <div onClick={() => {setSearchValue('')}} className="flex-none p-2 sm:p-3.5 rounded-full sm:rounded-sm text-white bg-blue-700/50 cursor-pointer">
         <RxCross2 className="text-base" />
       </div>
     </form>

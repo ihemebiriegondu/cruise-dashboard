@@ -3,7 +3,7 @@ import { MdOutlineDashboard, MdOutlineProductionQuantityLimits, MdOutlineListAlt
 
 export default function SideNav() {
     return (
-        <nav className='bg-white pt-44 pb-96 px-8'>
+        <nav className='absolute top-0 bottom-0 bg-white pt-44 pb-96 lg:px-4 xl:px-8 hidden lg:block'>
             <ul className='flex flex-col gap-y-3'>
                 <li className='p-2.5 rounded-xl border border-white flex items-center gap-x-2.5 text-zinc-400 cursor-pointer'>
                     <div className='p-1 rounded-md'><MdOutlineDashboard /></div>

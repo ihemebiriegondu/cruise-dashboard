@@ -215,9 +215,9 @@ export function OrdersList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [ordersPerPage] = useState(5);
 
-  const indexOfLastPost = currentPage * ordersPerPage;
-  const indexOfFirstPost = indexOfLastPost - ordersPerPage;
-  const currentOrders = filteredOrder.slice(indexOfFirstPost, indexOfLastPost);
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = filteredOrder.slice(indexOfFirstOrder, indexOfLastOrder);
 
   /*selectedItem: {
     selected: number;
@@ -228,15 +228,15 @@ export function OrdersList() {
   };
 
   return (
-    <article>
-      <table className="table-auto w-full rounded-md bg-white divide-y">
-        <caption className="caption-top text-start text-zinc-400 mb-3 mt-4 ps-8">
-          Showing result 101-120 Result
+    <article className="overflow-auto">
+      <table className="table-auto w-large sm:w-full rounded-md bg-white divide-y overflow-auto">
+        <caption className="caption-top text-start text-zinc-400 italic text-sm md:text-base mb-1 md:mb-3 mt-4 md:ps-8">
+          Showing result {indexOfFirstOrder + 1} - {indexOfLastOrder}
         </caption>
 
         <thead className="">
           <tr className="text-zinc-400">
-            <th className="py-3 ps-9 text-start font-normal">Order number</th>
+            <th className="py-3 ps-2 md:ps-6 lg:ps-9 text-start font-normal">Order number</th>
             <th className="text-start font-normal">Products</th>
             <th className="font-normal">Customer names</th>
             <th className="font-normal">Status</th>
@@ -257,7 +257,7 @@ export function OrdersList() {
                 key={order.onumber.stringValue}
                 id={order.onumber.stringValue}
               >
-                <td className="py-5 ps-9">{order.onumber.stringValue}</td>
+                <td className="py-5 ps-2 md:ps-6 lg:ps-9">{order.onumber.stringValue}</td>
                 <td className="font-bold">{order.product.stringValue}</td>
                 <td className="text-center">{order.name.stringValue}</td>
                 <td className="text-sm text-center">

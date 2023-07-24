@@ -51,10 +51,10 @@ export default function FilterBars() {
   //console.log(filterValues)
 
   return (
-    <div className="bg-white w-full mt-4 rounded-lg shadow-sm overflow-hidden px-4 py-3.5">
+    <div className="bg-white w-full mt-2 lg:mt-4 rounded-lg shadow-sm overflow-hidden px-2 sm:px-4 py-2 sm:py-3.5">
       <h1 className="font-bold mb-2">Filter by:</h1>
-      <div className="flex justify-between">
-        <div className="flex gap-x-10">
+      <div className="flex justify-between flex-wrap gap-2">
+        <div className="flex gap-x-2 sm:gap-x-4 md:gap-x-8 lg:gap-x-10">
           <div
             data-dropdown="statusDropdown"
             onClick={showDropDowns}

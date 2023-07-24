@@ -9,11 +9,13 @@ import FilterBars from "./components/filterBars";
 
 function App() {
   return (
-    <main className="bg-indigo-100 flex gap-x-1.5">
-      <SideNav />
+    <main className="bg-indigo-100 flex justify-start gap-x-1.5 lg:pe-10">
+      <aside className="lg:basis-2/12">
+        <SideNav />
+      </aside>
 
-      <section className="basis-10/12 py-5">
-        <div className="px-8 relative">
+      <section className="lg:basis-10/12 2xl:basis-11/12 lg:pt-5 pt-2 pb-5 w-full lg:px-0 sm:px-4 px-2">
+        <div className="md:px-6 lg:px-8 relative">
           <BreadCrumbs />
           <SearchBar />
           <FilterBars />
